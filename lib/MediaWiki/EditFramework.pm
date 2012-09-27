@@ -4,13 +4,46 @@ MediaWiki::EditFramework - a framework for editing MediaWiki pages.
 
 =head1 SYNOPSIS
 
-use MediaWiki::EditFramework;
+ use MediaWiki::EditFramework;
 
-my $wiki = MediaWiki::EditFramework->new('example.com', 'wiki');
+ my $wiki = MediaWiki::EditFramework->new('example.com', 'wiki');
+ my $page = $wiki->get_page('Main_Page');
+ my $text = $page->get_text;
+ $text =~ s/old thing/new update/g;
+ $page->edit($text, 'update page');
 
 =head2 DESCRIPTION
 
-This is a higher level framework for editing MediaWiki pages.
+This is a higher level framework for editing MediaWiki pages.  It depends on
+another module for lower level API access, and doesn't provide functionality
+unrelated to editing.
+
+This is the framework that I've been using for the past few years to run an
+archiving bot.  The main features that it has over lower-level frameworks
+are:
+
+=over
+
+=item *
+
+Pages are represented as objects.  
+
+This allows the page to store additional information, such as the last
+updated timestamp when they were retrieved.  The timestamp is then passed
+back to the server when the page is edited, to allow it to properly detect
+edit conflicts.
+
+=item *
+
+The module supports specified a write_prefix, which is appended to pages
+titles when editing a page.  
+
+This makes it easier to create a test mode for a bot script.  By specifying
+the write prefix in your own user space, the bot will retrieve the normal
+pages, but the modifications will be written to user space so you can review
+them without impacting others.
+
+=back
 
 =cut
 
@@ -26,17 +59,16 @@ use MediaWiki::EditFramework::Page;
 use strict;
 
 our $VERSION = '0.01';
-our ABSTRACT = 'framework for editing MediaWiki pages';
+our $ABSTRACT = 'framework for editing MediaWiki pages';
 
 =head2 CONSTRUCTOR
 
 =over
 
-=item MediaWiki::EditFramework->B<new>(I<SITE>,I<PATH>)
+=item B<new>(I<SITE>,I<PATH>)
 
 Create a new instance pointing to the specified I<SITE> and I<PATH> (default
-I<w>).  Creates the underling api object, pointing to
-I<http://SITE/PATH/api.php>.
+I<w>).  The underling API object points to http://I<SITE>/I<PATH>/api.php.
 
 =back
 
@@ -71,9 +103,9 @@ sub cookie_jar( $$ ) {
     $self->{0}{ua}->cookie_jar($file, autosave=>1);
 }
 
-=item B<login>(I<$user>,I<$pass>)
+=item B<login>(I<USER>,I<PASS>)
 
-Log in the specified user.
+Log in the specified I<USER>.
 
 =cut
 
@@ -97,19 +129,10 @@ sub login ($$$) {
 }
 
 
-sub get_text( $$ ) {
-    my ($self,$title) = @_;
-    my $page = $self->{0}->get_page({title=>$title});
-    return $page->{'*'};
-    #FIXME - store $page->{timestamp}, to pass back in
-    # edit (basetimestamp=>$ts,..)
-
-};
-
 =item B<get_page>(I<TITLE>)
 
 Get the wiki page with the specified I<TITLE>.  Returns an instance of
-I<MediaWiki::EditFramework::Page>, which has methods to get/edit the page.
+L<MediaWiki::EditFramework::Page>, which has methods to get/edit the page text.
 
 =cut
 
@@ -130,6 +153,16 @@ sub create_page( $$ ) {
     return $page;
 };
 
+=item B<write_prefix>(I<PREFIX>)
+
+When writing pages, prepend the specified I<PREFIX> to the page title.
+
+This makes it easier to create a test mode for a bot script.  By specifying
+the write prefix in your own user space, the bot will retrieve the normal
+pages, but the modifications will be written to user space so you can review
+them without impacting others.
+
+=cut
 
 sub write_prefix {
     my $self = shift;
@@ -142,6 +175,14 @@ sub write_prefix {
 =head1 SEE ALSO
 
 L<MediaWiki::API>
+
+=head1 COPYRIGHT
+
+Copyright (C) 2012 by Steve Sanbeg
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.10.1 or,
+at your option, any later version of Perl 5 you may have available.
 
 =cut
 

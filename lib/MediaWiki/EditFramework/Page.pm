@@ -1,6 +1,6 @@
 =head1 NAME
 
-MediaWiki::EditFramework::Page - an object to represent a MediaWiki page.
+MediaWiki::EditFramework::Page - a MediaWiki page object.
 
 =head1 SYNOPSIS
 
@@ -16,7 +16,7 @@ MediaWiki::EditFramework::Page - an object to represent a MediaWiki page.
 
 This module represents a MediaWiki page.  When instantiated, it gets the
 page information from the site.  The last modified timestamp is stored when
-the page is retrieved, and based back with the I<edit> method, to allow the
+the page is retrieved, and passed back via the I<edit> method to allow the
 server to properly detect edit conflicts.
 
 =head2 METHODS
@@ -93,6 +93,8 @@ sub edit( $$$ ) {
 Returns true if the underlying page existed on the server when the page was
 rretrieved, false if it is a new page.
 
+=back 
+
 =cut
 
 sub exists {
@@ -100,5 +102,14 @@ sub exists {
 	return exists $self->[1]->{'*'};
 }
 
+=head1 COPYRIGHT
+
+Copyright (C) 2012 by Steve Sanbeg
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.10.1 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
 
 1;

@@ -1,3 +1,19 @@
+=head1 NAME
+
+MediaWiki::EditFramework - a framework for editing MediaWiki pages.
+
+=head1 SYNOPSIS
+
+use MediaWiki::EditFramework;
+
+my $wiki = MediaWiki::EditFramework->new('example.com', 'wiki');
+
+=head2 DESCRIPTION
+
+This is a higher level framework for editing MediaWiki pages.
+
+=cut
+
 package MediaWiki::EditFramework;
 
 use strict;
@@ -10,6 +26,25 @@ use MediaWiki::EditFramework::Page;
 use strict;
 
 our $VERSION = '0.01';
+our ABSTRACT = 'framework for editing MediaWiki pages';
+
+=head2 CONSTRUCTOR
+
+=over
+
+=item MediaWiki::EditFramework->B<new>(I<SITE>,I<PATH>)
+
+Create a new instance pointing to the specified I<SITE> and I<PATH> (default
+I<w>).  Creates the underling api object, pointing to
+I<http://SITE/PATH/api.php>.
+
+=back
+
+=head2 METHODS
+
+=over
+
+=cut
 
 sub new ($;$$) {
     my ($class,$site,$path)=@_;
@@ -22,12 +57,25 @@ sub new ($;$$) {
     bless {0=>$mw, write_prefix=>''}, $class;
 }
 
+=item B<cookie_jar>(I<FILE>) 
+
+Passes I<FILE> to L<LWP::UserAgent>'s I<cookie_jar> method, to store cookies
+for a persistent login.
+
+=cut
+
 sub cookie_jar( $$ ) {
     #temporary method for persistent login.
     my $self = shift;
     my $file = shift;
     $self->{0}{ua}->cookie_jar($file, autosave=>1);
 }
+
+=item B<login>(I<$user>,I<$pass>)
+
+Log in the specified user.
+
+=cut
 
 sub login ($$$) {
     my ($self,$user,$pass) = @_;
@@ -58,14 +106,43 @@ sub get_text( $$ ) {
 
 };
 
+=item B<get_page>(I<TITLE>)
+
+Get the wiki page with the specified I<TITLE>.  Returns an instance of
+I<MediaWiki::EditFramework::Page>, which has methods to get/edit the page.
+
+=cut
+
 sub get_page( $$ ) {
     MediaWiki::EditFramework::Page->new(@_);
 };
+
+=item B<create_page>(I<TITLE>)
+
+Get the wiki page with the specified I<TITLE>; then croak if it already
+exists.
+
+=cut
+
 sub create_page( $$ ) {
     my $page = MediaWiki::EditFramework::Page->new(@_);
     croak "$_[1]: exists" if $page->exists;
     return $page;
 };
 
+
+sub write_prefix {
+    my $self = shift;
+    my $prefix = shift;
+    $self->{write_prefix} = $prefix;
+}
+
+=back
+
+=head1 SEE ALSO
+
+L<MediaWiki::API>
+
+=cut
 
 1;

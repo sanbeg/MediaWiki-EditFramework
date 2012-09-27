@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use MediaWiki::API;
 use Data::Dumper;
-
+use MediaWiki::EditFramework::Page;
 use strict;
 
 our $VERSION = '0.01';
@@ -57,22 +57,6 @@ sub get_text( $$ ) {
     # edit (basetimestamp=>$ts,..)
 
 };
-
-sub edit( $$$ ) {
-    my ($self,$title,$text,$summary) = @_;
-    my $mw = $self->{0};
-    
-    die "goodbye cruel world";
-
-    $mw->edit({
-	action=>'edit', bot=>1,
-	title=>$title,
-	text=>$text,
-	summary=>$summary,
-	}) or confess $mw->{error}->{code} . ': ' . 
-	    Dumper($mw->{error}->{details});
-}
-
 
 sub get_page( $$ ) {
     MediaWiki::EditFramework::Page->new(@_);

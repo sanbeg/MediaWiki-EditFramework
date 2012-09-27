@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/MediaWiki-EditFramework.t
+lib/MediaWiki/EditFramework.pm
+lib/MediaWiki/EditFramework/Page.pm

@@ -8,5 +8,8 @@ WriteMakefile(
     PREREQ_PM         => {'MediaWiki::API' => 0.17 }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/MediaWiki/EditFramework.pm', # retrieve abstract from module
-       AUTHOR         => 'Steve Sanbeg <steve@>') : ()),
+       AUTHOR         => 'Steve Sanbeg <sanbeg@cpan.org>') : ()),
+    ($ExtUtils::MakeMaker::VERSION >= 6.3002 ?
+	  (LICENSE		=> 'perl') : ()),
+
 );

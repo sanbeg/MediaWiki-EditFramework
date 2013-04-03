@@ -91,7 +91,7 @@ sub edit( $$$ ) {
 =item B<exists>
 
 Returns true if the underlying page existed on the server when the page was
-rretrieved, false if it is a new page.
+retrieved, false if it is a new page.
 
 =back 
 

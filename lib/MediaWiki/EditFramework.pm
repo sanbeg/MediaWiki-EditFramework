@@ -58,7 +58,7 @@ use Data::Dumper;
 use MediaWiki::EditFramework::Page;
 use strict;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 our $ABSTRACT = 'framework for editing MediaWiki pages';
 
 =head2 CONSTRUCTOR

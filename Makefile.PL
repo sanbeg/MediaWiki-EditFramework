@@ -6,7 +6,7 @@ WriteMakefile(
     NAME              => 'MediaWiki::EditFramework',
     VERSION_FROM      => 'lib/MediaWiki/EditFramework.pm', # finds $VERSION
     PREREQ_PM         => {'MediaWiki::API' => 0.17 }, # e.g., Module::Name => 1.1
-    BUILD_REQUIRES    => {'Test::MockModule' => 0}, 
+    BUILD_REQUIRES    => {'Test::MockModule' => 0, Storable => 0}, 
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/MediaWiki/EditFramework.pm', # retrieve abstract from module
        AUTHOR         => 'Steve Sanbeg <sanbeg@cpan.org>') : ()),

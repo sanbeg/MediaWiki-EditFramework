@@ -2,6 +2,8 @@ Changes
 Makefile.PL
 MANIFEST
 README
-t/MediaWiki-EditFramework.t
 lib/MediaWiki/EditFramework.pm
 lib/MediaWiki/EditFramework/Page.pm
+t/MediaWiki-EditFramework.t
+t/data/Test-w-index.php
+t/data/Main_Page

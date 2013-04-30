@@ -37,6 +37,19 @@ sub new ($$$) {
 	bless [$api,$page], $class;
 }
 
+sub _dump_text {
+  my ($self,$prefix,$text) = @_;
+  my ($mw,$page) = @$self;
+
+  if (defined $mw->{text_dump_dir}) {
+    my $title = $page->{title};
+    $title =~ s:/:-:g;
+    
+    open my($fh), '>', "$mw->{text_dump_dir}/$prefix-$title";
+    print $fh $text;
+    close $fh;
+  }
+}
 =item B<get_text>
 
 Get the current page text.
@@ -44,7 +57,10 @@ Get the current page text.
 =cut
 
 sub get_text( $ ) {
-	return $_[0][1]{'*'};
+  my $self = shift;
+  my ($mw,$page) = @$self;
+  $self->_dump_text(read=>$page->{'*'});
+  return $page->{'*'};
 }
 
 =item B<edit>(I<TEXT>,I<SUMMARY>)
@@ -69,6 +85,8 @@ sub edit( $$$ ) {
 	my $page = $self->[1];
 	my $p = $mw->{write_prefix};
 
+	$self->_dump_text(write=>$text); 
+	  
 	my %qh = (
 		action=>'edit', 
 		bot=>1,

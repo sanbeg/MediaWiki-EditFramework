@@ -16,7 +16,8 @@ MediaWiki::EditFramework - a framework for editing MediaWiki pages.
 
 This is a higher level framework for editing MediaWiki pages.  It depends on
 another module for lower level API access, and doesn't provide functionality
-unrelated to editing.
+unrelated to editing.  By using a higher-level abstraction layer in scripts,
+it becomes simpler to change out backend modules as needed.
 
 This is the framework that I've been using for the past few years to run an
 archiving bot.  The main features that it has over lower-level frameworks

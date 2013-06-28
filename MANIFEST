@@ -2,6 +2,7 @@ Changes
 Makefile.PL
 MANIFEST
 README
+LICENSE
 lib/MediaWiki/EditFramework.pm
 lib/MediaWiki/EditFramework/Page.pm
 t/MediaWiki-EditFramework.t

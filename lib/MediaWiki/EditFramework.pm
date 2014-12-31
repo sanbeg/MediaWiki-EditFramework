@@ -173,6 +173,14 @@ sub write_prefix {
 
 =back
 
+=cut
+
+sub api {
+  my $self = shift;
+  return $self->{0};
+}
+
+
 =head1 SEE ALSO
 
 L<MediaWiki::API>

@@ -27,9 +27,9 @@ server to properly detect edit conflicts.
 
 package MediaWiki::EditFramework::Page;
 use strict;
-use warnings;	
+use warnings;
 use Data::Dumper;
-
+use Encode;
 
 sub new ($$$) {
 	my ($class,$api,$title) = @_;
@@ -46,7 +46,7 @@ sub _dump_text {
     $title =~ s:/:-:g;
     
     open my($fh), '>', "$mw->{text_dump_dir}/$prefix-$title";
-    print $fh $text;
+    print $fh encode_utf8(decode_utf8($text));
     close $fh;
   }
 }

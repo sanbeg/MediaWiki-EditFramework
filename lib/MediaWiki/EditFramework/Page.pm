@@ -91,7 +91,7 @@ sub edit( $$$ ) {
 		action=>'edit', 
 		bot=>1,
 		title=>($p.$page->{title}),
-		text=>$text,
+		text=>decode_utf8($text),
 		summary=>$summary,
 	);
 

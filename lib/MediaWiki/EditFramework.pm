@@ -79,12 +79,14 @@ I<w>).  The underling API object points to http://I<SITE>/I<PATH>/api.php.
 
 =cut
 
+our $scheme = 'https';
+
 sub new ($;$$) {
     my ($class,$site,$path)=@_;
     my $mw = MediaWiki::API->new();
     if (defined $site) {
 	$path = 'w' unless defined $path;
-	$mw->{config}->{api_url} = "http://$site/$path/api.php";
+	$mw->{config}->{api_url} = "${scheme}://$site/$path/api.php";
     }
     #$mw->{ua}->cookie_jar({file=>"$ENV{HOME}/.cookies.txt", autosave=>1});
     bless {0=>$mw, write_prefix=>''}, $class;
